@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>DingWang Spring Boot project Parent Pom</name>
+    <groupId>com.dingwang</groupId>
+    <artifactId>springboot-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0.RELEASE</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.0.6.RELEASE</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <project.build.number>SNAPSHOT</project.build.number>
+        <project.release.version>0.0.1-SNAPSHOT</project.release.version>
+        <project.service.release.version>0.0.1-${project.build.number}</project.service.release.version>
+
+        <sonar.host.url>http://sonar.caijj.net/</sonar.host.url>
+        <sonar.cobertura.reportPath>target/site/cobertura/coverage.xml</sonar.cobertura.reportPath>
+
+        <rabbit.listener.init>true</rabbit.listener.init>
+        <jar.name>${artifactId}-${version}</jar.name>
+        <artifactId.postfix></artifactId.postfix>
+
+        <okhttp.version>3.14.3</okhttp.version>
+        <!--<lombok.version>1.16.22</lombok.version>-->
+        <sentinel.version>1.7.0</sentinel.version>
+        <fastjson.version>1.2.51.sec10</fastjson.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-bom</artifactId>
+                <version>5.6.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 由于spring用的jar包版本低，某些功能不包括，我们使用最新版 -->
+            <dependency>
+                <groupId>com.ecwid.consul</groupId>
+                <artifactId>consul-api</artifactId>
+                <version>1.4.2</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.code.gson</groupId>
+                        <artifactId>gson</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpcore</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- fast json -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- mybatis lib -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.4.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>1.3.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>1.3.2</version>
+            </dependency>
+
+            <!-- guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>26.0-jre</version>
+            </dependency>
+
+            <!-- commons-net -->
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>3.6</version>
+            </dependency>
+
+            <!-- commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+            </dependency>
+
+            <!-- druid db connection pool-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.1.12</version>
+            </dependency>
+
+            <!-- mybatis 分页插件 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>5.1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>1.2.9</version>
+            </dependency>
+
+            <!-- zookeeper 依赖，由于zookeeper的客户端与服务端版本必须匹配，而spring依赖中的默认版本是3.5的zookeeper-->
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>3.4.13</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-okhttp</artifactId>
+                <version>10.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-core</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
+            <!-- lombok -->
+            <!-- 不使用springboot的版本，原因：https://github.com/rzwitserloot/lombok/issues/1920 -->
+            <!--<dependency>-->
+            <!--<groupId>org.projectlombok</groupId>-->
+            <!--<artifactId>lombok</artifactId>-->
+            <!--<version>${lombok.version}</version>-->
+            <!--</dependency>-->
+
+            <!-- io.swagger -->
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>1.5.21</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>1.5.21</version>
+            </dependency>
+
+            <!-- springboot admin -->
+            <dependency>
+                <groupId>org.jolokia</groupId>
+                <artifactId>jolokia-core</artifactId>
+                <version>1.6.0</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>2.0.5</version>
+            </dependency>
+
+            <!-- okhttp -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <!-- sentinel -->
+            <!--<dependency>-->
+                <!--<groupId>com.alibaba.csp</groupId>-->
+                <!--<artifactId>sentinel-core</artifactId>-->
+                <!--<version>${sentinel.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>com.alibaba.csp</groupId>-->
+                <!--<artifactId>sentinel-annotation-aspectj</artifactId>-->
+                <!--<version>${sentinel.version}</version>-->
+            <!--</dependency>-->
+
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <project.release.version>0.0.1-SNAPSHOT</project.release.version>
+                <project.build.number>SNAPSHOT</project.build.number>
+                <project.service.release.version>0.0.1-${project.build.number}</project.service.release.version>
+                <!--<host.swaggerplus>http://swaggerplus.apps01.ali-bj-dev01.shuheo.net/swaggerplus</host.swaggerplus>-->
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!--<distributionManagement>-->
+                <!--<snapshotRepository>-->
+                    <!--<id>nexus</id>-->
+                    <!--<name>nexus</name>-->
+                    <!--<url>http://registry.caijj.net/repository/service-repo-develops/</url>-->
+                <!--</snapshotRepository>-->
+            <!--</distributionManagement>-->
+        </profile>
+
+        <profile>
+            <id>sit</id>
+            <properties>
+                <project.release.version>1.0.0-SNAPSHOT</project.release.version>
+                <project.build.number>SNAPSHOT</project.build.number>
+                <project.service.release.version>1.0.0-${project.build.number}</project.service.release.version>
+                <!--<host.swaggerplus>http://swaggerplus.apps01.ali-bj-sit01.shuheo.net/swaggerplus</host.swaggerplus>-->
+            </properties>
+            <!--<distributionManagement>-->
+                <!--<snapshotRepository>-->
+                    <!--<id>nexus</id>-->
+                    <!--<name>nexus</name>-->
+                    <!--<url>http://registry.caijj.net/repository/service-repo-snapshots/</url>-->
+                <!--</snapshotRepository>-->
+            <!--</distributionManagement>-->
+        </profile>
+
+
+        <!--<profile>-->
+            <!--<id>pro</id>-->
+            <!--<properties>-->
+                <!--<project.release.version>1.0.0.RELEASE</project.release.version>-->
+                <!--<project.build.number>RELEASE</project.build.number>-->
+                <!--<project.service.release.version>1.0.0.${project.build.number}</project.service.release.version>-->
+                <!--<host.swaggerplus>http://swaggerplus.apps01.ali-bj-prd01.shuheo.net/swaggerplus</host.swaggerplus>-->
+            <!--</properties>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.apache.maven.plugins</groupId>-->
+                        <!--<artifactId>maven-enforcer-plugin</artifactId>-->
+                        <!--<version>3.0.0-M2</version>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>enforce-no-snapshots</id>-->
+                                <!--<phase>compile</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>enforce</goal>-->
+                                <!--</goals>-->
+                                <!--<configuration>-->
+                                    <!--<rules>-->
+                                        <!--<requireReleaseDeps>-->
+                                            <!--<message>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;[依赖的组件版本存在风险，请检查!]&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</message>-->
+                                            <!--<includes>-->
+                                                <!--<include>cn.caijiajia:*</include>-->
+                                            <!--</includes>-->
+                                            <!--<onlyWhenRelease>true</onlyWhenRelease>-->
+                                        <!--</requireReleaseDeps>-->
+                                    <!--</rules>-->
+                                    <!--<fail>true</fail>-->
+                                <!--</configuration>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
+
+        <!--<profile>-->
+            <!--<id>fix-dependency</id>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<groupId>cn.caijiajia</groupId>-->
+                        <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                        <!--<version>1.0.0.RELEASE</version>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>backup</id>-->
+                                <!--<phase>validate</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>backup</goal>-->
+                                    <!--<goal>replace-effective-dependency</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
+
+        <!--<profile>-->
+            <!--<id>generate-swagger</id>-->
+            <!--<build>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<groupId>com.github.kongchen</groupId>-->
+                        <!--<artifactId>swagger-maven-plugin</artifactId>-->
+                        <!--<version>3.1.0</version>-->
+                        <!--<configuration>-->
+                            <!--<apiSources>-->
+                                <!--<apiSource>-->
+                                    <!--<appName>${artifactId}</appName>-->
+                                    <!--<version>${project.build.number}</version>-->
+                                    <!--<swaggerplusHost>${host.swaggerplus}</swaggerplusHost>-->
+                                <!--</apiSource>-->
+                            <!--</apiSources>-->
+                        <!--</configuration>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<phase>compile</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>generate</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
+        <!--</profile>-->
+
+        <profile>
+            <id>job</id>
+            <properties>
+                <rabbit.listener.init>false</rabbit.listener.init>
+                <artifactId.postfix>job</artifactId.postfix>
+            </properties>
+        </profile>
+
+    </profiles>
+
+    <build>
+        <resources>
+            <!-- 拷贝所有资源文件 -->
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**.*</include>
+                </includes>
+            </resource>
+            <!-- 为资源文件开启过滤 -->
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>applicationContext.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>applicationContext.xml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+
+        </resources>
+        <testResources>
+            <!-- 拷贝所有资源文件 -->
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <includes>
+                    <include>**.*</include>
+                </includes>
+            </testResource>
+            <!-- 为资源文件开启过滤 -->
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--UT coverage -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <quiet>true</quiet>
+                    <instrumentation>
+                        <excludes>
+                            <!--exclude example -->
+                            <!--<exclude>com/xxx/xxx/*.class</exclude> -->
+                        </excludes>
+                        <ignoreTrivial>true</ignoreTrivial>
+                    </instrumentation>
+                    <formats>
+                        <format>xml</format>
+                        <format>html</format>
+                    </formats>
+                    <check/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>cobertura</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>5.0.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build-info</goal>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+    <!--<distributionManagement>-->
+        <!--<repository>-->
+            <!--<id>nexus</id>-->
+            <!--<name>nexus</name>-->
+            <!--<url>http://registry.caijj.net/repository/service-repo-releases/</url>-->
+        <!--</repository>-->
+        <!--<snapshotRepository>-->
+            <!--<id>nexus</id>-->
+            <!--<name>nexus</name>-->
+            <!--<url>http://registry.caijj.net/repository/service-repo-snapshots/</url>-->
+        <!--</snapshotRepository>-->
+    <!--</distributionManagement>-->
+</project>
