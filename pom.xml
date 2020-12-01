@@ -4,420 +4,53 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.dingwang</groupId>
-	<artifactId>sea-snail</artifactId>
+	<artifactId>seanail-config</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.8.RELEASE</version>
+        <groupId>com.dingwang</groupId>
+        <artifactId>springboot-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>seanail-config-biz</module>
-		<module>seanail-config-commons</module>
-		<module>seanail-config-dal</module>
-		<module>seanail-config-facade-transfer</module>
-		<module>seanail-config-external</module>
-		<module>seanail-config</module>
+		<module>config-biz</module>
+		<module>config-commons</module>
+		<module>config-dal</module>
+		<module>config-facade-transfer</module>
+		<module>config-external</module>
+		<module>config</module>
 	</modules>
-
-	<!-- 设置 deploy 部署仓库 -->
-<!-- 	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<name>releases</name>
-			<url>http://10.80.100.134:8081/repository/daxin-release/</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>snapshots</name>
-			<url>http://10.80.100.134:8081/repository/daxin-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement> -->
-
-	<!--设置 maven 依赖仓库 -->
-	<repositories>
-		<repository>
-			<id>public</id>
-			<name>Public Repositories</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		 <repository>
-		    <id>central</id>
-		    <name>Atlassian Public Repository</name>
-		    <layout>default</layout>
-		    <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-		    <snapshots>
-		      <enabled>false</enabled>
-		    </snapshots>
-		  </repository>
-	</repositories>
-<!-- 	<pluginRepositories>
-		<pluginRepository>
-			<id>public</id>
-			<name>nexus</name>
-			<url>http://10.80.100.134:8081/repository/daxin-public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories> -->
-
-	<build>
-		<defaultGoal>install</defaultGoal>
-
-		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-archetype-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>2.8.2</version>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>2.7</version>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-		</plugins>
-
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
-	</build>
-
-	<profiles>
-		<profile>
-			<!-- 本地开发环境 -->
-			<id>dev</id>
-			<properties>
-				<profiles.active>dev</profiles.active>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-		<profile>
-			<!-- 测试环境 -->
-			<id>test</id>
-			<properties>
-				<profiles.active>test</profiles.active>
-			</properties>
-		</profile>
-		<profile>
-			<!-- 生产环境 -->
-			<id>prod</id>
-			<properties>
-				<profiles.active>prod</profiles.active>
-			</properties>
-		</profile>
-	</profiles>
-
 
 
 	<!--定义依赖包的版本 -->
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring.boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope> <!-- import -->
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring.cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-openfeign</artifactId>
-				<version>${openfeign.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.retry</groupId>
-				<artifactId>spring-retry</artifactId>
-				<version>${spring-retry.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-core</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-beans</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-tx</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-web</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.netflix.feign</groupId>
-				<artifactId>feign-slf4j</artifactId>
-				<version>${feign-slf4j.version}</version>
-			</dependency>
-			<!-- mybatis -->
-			<dependency>
-				<groupId>org.mybatis.spring.boot</groupId>
-				<artifactId>mybatis-spring-boot-starter</artifactId>
-				<version>${mybatis-spring-boot-starter.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${mybatis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis-spring</artifactId>
-				<version>${mybatis-spring.version}</version>
-			</dependency>
-
-			<!-- gihub分页插件 -->
-			<dependency>
-				<groupId>com.github.pagehelper</groupId>
-				<artifactId>pagehelper</artifactId>
-				<version>${pagehelper.version}</version>
-			</dependency>
-			<!-- validator -->
-			<dependency>
-				<groupId>javax.validation</groupId>
-				<artifactId>validation-api</artifactId>
-				<version>${javax-validation.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate-validator.version}</version>
-			</dependency>
-			<dependency>
-	            <groupId>com.alibaba</groupId>
-	            <artifactId>druid</artifactId>
-	            <version>${druid.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>mysql</groupId>
-	            <artifactId>mysql-connector-java</artifactId>
-	            <version>${mysql-connector-java.version}</version>
-	        </dependency>
-	        <!-- swagger -->
-	         <dependency>
-	            <groupId>io.springfox</groupId>
-	            <artifactId>springfox-swagger-ui</artifactId>
-	        	<version>${springfox-swagger.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>io.springfox</groupId>
-	            <artifactId>springfox-swagger2</artifactId>
-	            <version>${springfox-swagger.version}</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>io.swagger</groupId>
-	            <artifactId>swagger-annotations</artifactId>
-	        	<version>${swagger-annotations.version}</version>
-	        </dependency>
-
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>${commons-lang.version}</version>
-			</dependency>
-	        <dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
-
-			<dependency>
-			    <groupId>commons-logging</groupId>
-			    <artifactId>commons-logging</artifactId>
-			    <version>${commons-logging.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>ch.qos.logback</groupId>
-			    <artifactId>logback-classic</artifactId>
-			    <version>${logback-core.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>ch.qos.logback</groupId>
-			    <artifactId>logback-core</artifactId>
-			    <version>${logback-core.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.slf4j</groupId>
-			    <artifactId>log4j-over-slf4j</artifactId>
-			    <version>${log4j-over-slf4j.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.slf4j</groupId>
-			    <artifactId>slf4j-api</artifactId>
-			    <version>${log4j-over-slf4j.version}</version>
-			</dependency>
-            <!-- test -->
-			<dependency>
-			    <groupId>junit</groupId>
-			    <artifactId>junit</artifactId>
-			    <version>${junit.version}</version>
-			</dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>${mockito-all.version}</version>
-            </dependency>
-			<dependency>
-	            <groupId>com.atlassian.jira</groupId>
-	            <artifactId>jira-rest-java-client</artifactId>
-	            <version>${jira-rest-java-client}</version>
-	        </dependency>
-			<dependency>
-			    <groupId>org.testng</groupId>
-			    <artifactId>testng</artifactId>
-			    <version>${testng.version}</version>
-			    <scope>test</scope>
-			</dependency>
-			<dependency>
-			    <groupId>org.dbunit</groupId>
-			    <artifactId>dbunit</artifactId>
-			    <version>${dbunit.version}</version>
-			    <exclusions>
-		           <exclusion>
-		               <artifactId>org.slf4j</artifactId>
-		               <groupId>slf4j-api</groupId>
-		           </exclusion>
-		        </exclusions>
-			</dependency>
-			<dependency>
-				<groupId>info.cukes</groupId>
-				<artifactId>cucumber-junit</artifactId>
-				<version>${info-cukes}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>info.cukes</groupId>
-				<artifactId>cucumber-java</artifactId>
-				<version>${info-cukes}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.jayway.jsonpath</groupId>
-				<artifactId>json-path</artifactId>
-				<version>${json-path}</version>
-			</dependency>
-			<dependency>
-			  <groupId>fakepath</groupId>
-			  <artifactId>restful-tester</artifactId>
-			  <version>${restful-tester}</version>
-			</dependency>
-			<dependency>
-			    <groupId>com.github.springtestdbunit</groupId>
-			    <artifactId>spring-test-dbunit</artifactId>
-			    <version>${spring-test-dbunit.version}</version>
-			    <scope>test</scope>
-			</dependency>
-			<dependency>
-			    <groupId>io.jsonwebtoken</groupId>
-			    <artifactId>jjwt</artifactId>
-			    <version>${jjwt.version}</version>
-			</dependency>
 
             <dependency>
                 <groupId>com.dingwang</groupId>
-                <artifactId>seanail-config-biz</artifactId>
+                <artifactId>config-biz</artifactId>
                 <version>${seanail.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.dingwang</groupId>
-                <artifactId>seanail-config-commons</artifactId>
+                <artifactId>config-commons</artifactId>
                 <version>${seanail.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.dingwang</groupId>
-                <artifactId>seanail-config-dal</artifactId>
+                <artifactId>config-dal</artifactId>
                 <version>${seanail.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.dingwang</groupId>
-                <artifactId>seanail-config-external</artifactId>
+                <artifactId>config-external</artifactId>
                 <version>${seanail.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.dingwang</groupId>
-                <artifactId>seanail-config-facade-transfer</artifactId>
+                <artifactId>config-facade-transfer</artifactId>
                 <version>${seanail.version}</version>
             </dependency>
 		</dependencies>
@@ -427,40 +60,6 @@
 	<properties>
         <seanail.version>1.0.0-SNAPSHOT</seanail.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.boot.version>2.0.8.RELEASE</spring.boot.version>
-		<spring.cloud.version>Finchley.SR2</spring.cloud.version>
-		<openfeign.version>2.0.4.RELEASE</openfeign.version>
-		<spring.version>5.0.12.RELEASE</spring.version>
-		<spring-retry.version>1.2.4.RELEASE</spring-retry.version>
-		<spring-cloud-starter.version>2.0.2.RELEASE</spring-cloud-starter.version>
-
-		<fastjson.version>1.2.58</fastjson.version>
-		<mybatis-spring-boot-starter.version>2.0.1</mybatis-spring-boot-starter.version>
-		<druid.version>1.1.17</druid.version>
-		<mybatis.version>3.5.1</mybatis.version>
-		<mybatis-spring.version>2.0.1</mybatis-spring.version>
-		<mysql-connector-java.version>6.0.6</mysql-connector-java.version>
-		<pagehelper.version>5.1.10</pagehelper.version>
-
-		<springfox-swagger.version>2.9.2</springfox-swagger.version>
-		<swagger-annotations.version>1.5.22</swagger-annotations.version>
-		<commons-lang.version>2.6</commons-lang.version>
-		<commons-logging.version>1.2</commons-logging.version>
-		<javax-validation.version>2.0.1.Final</javax-validation.version>
-		<lombok.version>1.18.16</lombok.version>
-		<guava.version>30.0-jre</guava.version>
-		<jjwt.version>0.7.0</jjwt.version>
-		<aspectj.version>1.8.10</aspectj.version>
-
-		<logback-core.version>1.2.3</logback-core.version>
-		<log4j-over-slf4j.version>1.7.25</log4j-over-slf4j.version>
-		<junit.version>4.12</junit.version>
-        <mockito-all.version>1.10.19</mockito-all.version>
-		<testng.version>6.10</testng.version>
-		<dbunit.version>2.5.4</dbunit.version>
-		<spring-test-dbunit.version>1.2.0</spring-test-dbunit.version>
-		<info-cukes>1.2.4</info-cukes>
-		<json-path>2.2.0</json-path>
 	</properties>
 
 </project>
