@@ -9,9 +9,8 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>config-facade-transfer</artifactId>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <version>${seanail.version}</version>
+
     <dependencies>
         <dependency>
             <groupId>com.dingwang</groupId>

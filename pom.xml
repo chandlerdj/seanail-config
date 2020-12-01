@@ -5,7 +5,7 @@
 
 	<groupId>com.dingwang</groupId>
 	<artifactId>seanail-config</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>${seanail.version}</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -58,7 +58,7 @@
 
     <!-- jar包版本声明 -->
 	<properties>
-        <seanail.version>1.0.0-SNAPSHOT</seanail.version>
+        <!--<seanail.version>1.0.0-SNAPSHOT</seanail.version>-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
